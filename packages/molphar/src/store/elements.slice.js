@@ -1,25 +1,51 @@
-import { nanoid } from "nanoid";
+import {nanoid} from "nanoid";
+import {elementsToTree} from "common/elementsToTree";
 
 export const createElementsSlice = (set, get) => {
   return {
     changeElementProperty(id, property, value) {
-      set(state => ({
-        ...state,
-        elements: {
-          ...state.elements,
-          [id]: {
-            ...state.elements[id],
-            [property]: value
-          }
-        },
-      }));
 
-      console.log('changeElementProperty', id, property, value);
+      const state = get();
 
-      set(state => ({
-        ...state,
-        elementsTree: copyObject(elementsToTree(Object.values(state.elements))[0]),
-      }));
+      if (state.elements[id]) {
+        set(state => ({
+          ...state,
+          elements: {
+            ...state.elements,
+            [id]: {
+              ...state.elements[id],
+              [property]: value
+            }
+          },
+        }));
+
+        console.log('changeElementProperty', id, property, value);
+
+        set(state => ({
+          ...state,
+          elementsTree: copyObject(elementsToTree(Object.values(state.elements))[0]),
+        }));
+      }
+
+      if (state.flows[id]) {
+        set(state => ({
+          ...state,
+          flows: {
+            ...state.flows,
+            [id]: {
+              ...state.flows[id],
+              [property]: value
+            }
+          },
+        }));
+
+        console.log('changeFlowProperty', id, property, value);
+
+        set(state => ({
+          ...state,
+          flowsTree: copyObject(elementsToTree(Object.values(state.flows))[0]),
+        }));
+      }
     },
     addElement(element) {
       const id = nanoid();
@@ -51,25 +77,6 @@ export const createElementsSlice = (set, get) => {
       }));
     }
   }
-}
-
-function elementsToTree(list) {
-  var map = {}, node, roots = [], i;
-
-  for (i = 0; i < list.length; i += 1) {
-    map[list[i].id] = i; // initialize the map
-    list[i].children = []; // initialize the children
-  }
-
-  for (i = 0; i < list.length; i += 1) {
-    node = list[i];
-    if (node.parentId) {
-      list[map[node.parentId]].children.push(node);
-    } else {
-      roots.push(node);
-    }
-  }
-  return roots;
 }
 
 const copyObject = (obj) => {

@@ -2,7 +2,8 @@ import {createElement, useEffect} from "react";
 import {useStore} from "../../store/store";
 import {Input} from "../ui/Input";
 import {TailwindToggle} from "../ui/TailwindToggle";
-import {Evaluator} from "../Evaluator";
+import {EmailSendStepModal} from "./EmailSendStepModal";
+import {Modal} from "../modal/modal";
 
 export const ModalShower = () => {
   const selectedId = useStore(state => state.selectedId);
@@ -25,83 +26,70 @@ export const ModalShower = () => {
       return;
     }
 
-    switch (selectedEntity.type) {
-      case 'button':
-        showModal({
-          name: 'elementSettings',
-          element: createElement(ButtonModal, {id: selectedEntity.id}), //<ButtonModal id={element.id} />,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit button</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'container':
-        showModal({
-          name: 'elementSettings',
-          element: <ContainerModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit container</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'text':
-        showModal({
-          name: 'elementSettings',
-          element: <TextModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit text</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'input':
-        showModal({
-          name: 'elementSettings',
-          element: <InputModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit input</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'flow':
-        showModal({
-          name: 'elementSettings',
-          element: <TriggerModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit trigger</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'js':
-        showModal({
-          name: 'elementSettings',
-          element: <JSStepModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit step</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'email:send':
-        showModal({
-          name: 'elementSettings',
-          element: <EmailSendStepModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit step</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-      case 'data:create':
-        showModal({
-          name: 'elementSettings',
-          element: <DataCreateStepModal id={selectedEntity.id}/>,
-          header: <div className="px-3 py-2 text-sm font-medium">Edit step</div>,
-          x: lastX,
-          y: lastY,
-        });
-        break;
-    }
+    showModal({
+      name: 'elementSettings',
+      x: lastX,
+      y: lastY,
+    });
   }, [selectedEntity]);
 
-  return null;
+  const getModalElement = () => {
+    if (!selectedEntity) {
+      return null;
+    }
+
+    switch (selectedEntity.type) {
+      case 'button':
+        return createElement(ButtonModal, {id: selectedEntity.id}); //<ButtonModal id={element.id} />,
+      case 'container':
+        return <ContainerModal id={selectedEntity.id}/>;
+      case 'text':
+        return <TextModal id={selectedEntity.id}/>;
+      case 'input':
+       return <InputModal id={selectedEntity.id}/>;
+      case 'flow':
+        return <TriggerModal id={selectedEntity.id}/>;
+      case 'js':
+        return <JSStepModal id={selectedEntity.id}/>;
+      case 'email:send':
+        return <EmailSendStepModal id={selectedEntity.id}/>;
+      case 'data:create':
+        return <DataCreateStepModal id={selectedEntity.id}/>;
+    }
+  }
+
+  const getModalHeader = () => {
+    if (!selectedEntity) {
+      return null;
+    }
+
+    switch (selectedEntity.type) {
+      case 'button':
+        return 'Button';
+      case 'container':
+        return 'Container';
+      case 'text':
+        return 'Text';
+      case 'input':
+        return 'Input';
+      case 'flow':
+        return 'Flow';
+      case 'js':
+        return 'JS';
+      case 'email:send':
+        return 'Email';
+      case 'data:create':
+        return 'Data';
+    }
+  }
+
+  return (
+    <Modal name="elementSettings" header={<div className="px-3 py-2 text-sm font-medium">Edit {getModalHeader()}</div>}>
+      {
+        getModalElement()
+      }
+    </Modal>
+  );
 }
 
 const ButtonModal = ({
@@ -234,25 +222,9 @@ const JSStepModal = ({
   )
 }
 
-const EmailSendStepModal = ({
-                              id,
-                            }) => {
-  const element = useStore(state => state.flows[id]);
-  const changeElementProperty = useStore(state => state.changeElementProperty);
-
-  return (
-    <div className="flex flex-col px-3 py-2">
-      <Input type="text" value={element.email}
-             onChange={e => changeElementProperty(element.id, 'email', e.target.value)}/>
-
-      <Evaluator />
-    </div>
-  )
-}
-
 const DataCreateStepModal = ({
-                              id,
-                            }) => {
+                               id,
+                             }) => {
   const element = useStore(state => state.flows[id]);
   const changeElementProperty = useStore(state => state.changeElementProperty);
 

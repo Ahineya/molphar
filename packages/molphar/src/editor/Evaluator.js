@@ -2,21 +2,13 @@ import classNames from "classnames";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useStore } from "../store/store";
+import {evaluate} from "common/evaluator";
 
-export const Evaluator = () => {
-  const [clauses, setClauses] = useState({
-    // '1': {
-    //   id: '1',
-    //   type: 'elementRef',
-    //   elementId: 'text',
-    // },
-    // '2': {
-    //   id: '2',
-    //   type: 'property',
-    //   property: 'text',
-    // },
-  });
-
+export const Evaluator = ({
+  clauses,
+  setClauses,
+  debug,
+                          }) => {
   const showModal = useStore(state => state.showModal);
   const elements = useStore(state => state.elements);
 
@@ -194,21 +186,11 @@ export const Evaluator = () => {
     }
   }
 
-  const getEvaluatedValue = () => {
-    const evaluated = Object.values(clauses).reduce((context, clause) => {
-      return applyClause(clause, context).value;
-    }, elements);
-
-    if (evaluated === elements) {
-      return null;
-    }
-
-    return JSON.stringify(evaluated);
-  }
-
   return (
     <div className="flex-grow">
-      <h1>Evaluator</h1>
+      {
+        debug && <h1>Evaluator</h1>
+      }
 
       <div>
         {
@@ -243,12 +225,14 @@ export const Evaluator = () => {
         </span>
       </div>
 
-      <div>
-        Evaluated:
-        {
-          getEvaluatedValue()
-        }
-      </div>
+      {
+        debug && <div>
+          Evaluated:
+          {
+            JSON.stringify(evaluate(clauses, elements))
+          }
+        </div>
+      }
     </div>
   )
 }
