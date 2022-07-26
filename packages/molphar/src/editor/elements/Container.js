@@ -1,11 +1,11 @@
 import classNames from "classnames";
-import { useStore } from "../../store/store";
-import { Element } from "../Element";
-import { Input } from "../ui/Input";
-import { TailwindToggle } from "../ui/TailwindToggle";
+import {useStore} from "../../store/store";
+import {Element} from "../Element";
+import {Input} from "../ui/Input";
+import {TailwindToggle} from "../ui/TailwindToggle";
 
-export const Container = ({ element }) => {
-  const { className, children } = element;
+export const Container = ({element}) => {
+  const {className, children} = element;
   const selectEntity = useStore(state => state.selectEntity);
   const selectedId = useStore(state => state.selectedId);
 
@@ -18,7 +18,8 @@ export const Container = ({ element }) => {
     <div
       data-element-type="container"
       className={classNames(className, 'cursor-default', {
-        'outline outline-blue-600 outline-2': selectedId === element.id
+        'outline outline-blue-600 outline-2': selectedId === element.id,
+        [`h-[${element.height}]`]: element.height !== undefined,
       })}
       onMouseDown={(e) => {
         e.stopPropagation();
@@ -27,7 +28,7 @@ export const Container = ({ element }) => {
       }}
     >
       {
-        children.map(child => <Element element={child} key={child.id} />)
+        children.map(child => <Element element={child} key={child.id}/>)
       }
     </div>
   );

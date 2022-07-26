@@ -2,13 +2,15 @@ export const elements = {
   'ROOT': {
     id: 'ROOT',
     type: 'ROOT',
-    className: 'h-screen'
+    className: 'h-screen',
+    order: 'a0',
   },
   'container1': {
     id: 'container1',
     type: 'container',
     parentId: 'ROOT',
     name: 'container1',
+    order: 'a0',
   },
   'text': {
     id: 'text',
@@ -17,6 +19,7 @@ export const elements = {
     text: 'Hello there!',
     parentId: 'container1',
     name: 'text1',
+    order: 'a0',
   },
   'button': {
     id: 'button',
@@ -25,6 +28,7 @@ export const elements = {
     text: 'Click me!',
     parentId: 'container1',
     name: 'button1',
+    order: 'a1',
   },
   'input': {
     id: 'input',
@@ -34,6 +38,7 @@ export const elements = {
     text: 'deadswallow@gmail.com',
     parentId: 'container1',
     name: 'input1',
+    order: 'a2',
   },
   'unknown': {
     id: 'unknown',
@@ -41,6 +46,7 @@ export const elements = {
     className: 'bg-slate-400 w-[200px] h-[200px]',
     text: 'Hello there!',
     parentId: 'ROOT',
+    order: 'a1',
   }
 };
 
@@ -48,7 +54,8 @@ export const flows = {
   'ROOT': {
     id: 'ROOT',
     type: 'ROOT',
-    className: 'h-screen'
+    className: 'h-screen',
+    order: 'a0',
   },
   'flow1': {
     id: 'flow1',
@@ -57,6 +64,7 @@ export const flows = {
     trigger: 'click',
     elementId: 'button',
     parentId: 'ROOT',
+    order: 'a0',
   },
   'step1': {
     id: 'step1',
@@ -64,6 +72,7 @@ export const flows = {
     type: 'js',
     code: 'console.log("Hello world!");',
     parentId: 'flow1',
+    order: 'a0',
   },
   'step2': {
     id: 'step2',
@@ -85,6 +94,7 @@ export const flows = {
       }
     }],
     parentId: 'flow1',
+    order: 'a1',
   },
   'step3': {
     id: 'step3',
@@ -97,5 +107,6 @@ export const flows = {
     ],
     dataType: 'user',
     parentId: 'flow1',
+    order: 'a2',
   },
 };

@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useStore } from "../store/store";
 import {evaluate} from "common/evaluator";
+import {Modal} from "./modal/modal";
 
 export const Evaluator = ({
   clauses,
@@ -61,25 +62,25 @@ export const Evaluator = ({
         // Show Select something modal
         showModal({
           name: 'clauseSettings',
-          element: <div>
-            {
-              Object.values(elements).map(element => {
-                return (
-                  <div
-                    key={element.id}
-                    onClick={() => {
-                      const newClauses = JSON.parse(JSON.stringify(clauses));
-                      newClauses[evaluatedClause.clause.id].elementId = element.id;
-                      // TODO: Check validity of the next clause
-
-                      setClauses(newClauses);
-                    }}
-                  >{element.name}</div>
-                )
-              })
-            }
-          </div>,
-          header: <div className="px-3 py-2 text-sm font-medium">{evaluatedClause.view}</div>,
+        //   element: <div>
+        //     {
+        //       Object.values(elements).map(element => {
+        //         return (
+        //           <div
+        //             key={element.id}
+        //             onClick={() => {
+        //               const newClauses = JSON.parse(JSON.stringify(clauses));
+        //               newClauses[evaluatedClause.clause.id].elementId = element.id;
+        //               // TODO: Check validity of the next clause
+        //
+        //               setClauses(newClauses);
+        //             }}
+        //           >{element.name}</div>
+        //         )
+        //       })
+        //     }
+        //   </div>,
+        //   header: <div className="px-3 py-2 text-sm font-medium">{evaluatedClause.view}</div>,
           x: e.clientX,
           y: e.clientY,
         });
@@ -233,6 +234,27 @@ export const Evaluator = ({
           }
         </div>
       }
+
+      <Modal name="clauseSettings" hideOnClickOutside>
+        <div>
+            {
+              Object.values(elements).map(element => {
+                return (
+                  <div
+                    key={element.id}
+                    // onClick={() => {
+                    //   const newClauses = JSON.parse(JSON.stringify(clauses));
+                    //   newClauses[evaluatedClause.clause.id].elementId = element.id;
+                    //   // TODO: Check validity of the next clause
+                    //
+                    //   setClauses(newClauses);
+                    // }}
+                  >{element.name}</div>
+                )
+              })
+            }
+          </div>
+      </Modal>
     </div>
   )
 }

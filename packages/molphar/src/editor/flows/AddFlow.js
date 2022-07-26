@@ -4,6 +4,8 @@ import {useStore} from "../../store/store";
 export const AddFlow = () => {
 
   const showModal = useStore(state => state.showModal);
+  const hideModal = useStore(state => state.hideModal);
+  const addFlow = useStore(state => state.addFlow);
 
   return (
     <div
@@ -20,7 +22,18 @@ export const AddFlow = () => {
       </span>
       <Modal name="add-flow" hideOnClickOutside>
         <div>
-          AAAAAAAAA
+          <button onClick={() => {
+            addFlow({
+              name: 'flow',
+              type: 'flow',
+              trigger: 'click',
+              elementId: null,
+            });
+
+            hideModal('add-flow');
+          }}>
+            Element action
+          </button>
         </div>
       </Modal>
     </div>

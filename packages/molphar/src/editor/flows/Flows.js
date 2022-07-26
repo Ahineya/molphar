@@ -1,9 +1,7 @@
 import {useStore} from "../../store/store"
-import {Evaluator} from "../Evaluator";
 import {AddStep} from "./AddStep";
 import {Step} from "./Step";
 import {Trigger} from "./Trigger";
-import {useState} from "react";
 import {AddFlow} from "./AddFlow";
 
 export const Flows = () => {
@@ -12,8 +10,8 @@ export const Flows = () => {
   const elements = useStore(state => state.elements);
 
   return (
-    <div className="p-4 flex flex-col gap-2">
-      <div className="flex items-start">
+    <div className="p-4 flex flex-col gap-2 overflow-auto w-full">
+      <div className="flex flex-col gap-2 items-start">
         {
           flowsTree.children.map(flow => (
             <div key={flow.id} className="flex items-center gap-1">
@@ -34,13 +32,12 @@ export const Flows = () => {
                 ))
               }
 
-              <AddStep/>
+              <AddStep parentFlowId={flow.id}/>
             </div>
           ))
         }
       </div>
       <AddFlow />
-
     </div>
   )
 }

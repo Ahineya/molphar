@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 export const TailwindToggle = ({
   classes,
-  classString,
+  classString = "",
   onChange,
 }) => {
   const classesArray = classString.split(" ");

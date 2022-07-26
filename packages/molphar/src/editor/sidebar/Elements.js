@@ -1,4 +1,4 @@
-import { useStore } from "../../store/store"
+import {useStore} from "../../store/store"
 
 const elements = [
   {
@@ -14,7 +14,18 @@ const elements = [
     type: 'button',
     className: '',
     text: 'Click me!',
-  }
+  },
+  {
+    type: 'input',
+    className: 'border border-slate-300 bg-slate-100',
+    placeholder: 'Your text...',
+    text: '',
+  },
+  {
+    type: 'container',
+    className: 'flex h-[20px] justify-center gap-4',
+    displayName: 'row',
+  },
 ]
 
 export const Elements = () => {
@@ -31,13 +42,13 @@ export const Elements = () => {
 }
 
 const Element = ({
-  element,
-}) => {
+                   element,
+                 }) => {
   const addElement = useStore(state => state.addElement);
 
   return (
     <div className="cursor-default hover:bg-slate-300 select-none" onClick={() => addElement(element)}>
-      {element.type}
+      {element.displayName || element.type}
     </div>
   )
 }

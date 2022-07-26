@@ -3,10 +3,10 @@ import { useStore } from "../../store/store";
 
 export const Trigger = ({
   flow,
-  elements,
 }) => {
   const selectedId = useStore(state => state.selectedId);
   const selectEntity = useStore(state => state.selectEntity);
+  const elements = useStore(state => state.elements);
 
   const getActionName = (type) => {
     switch (type) {
@@ -19,12 +19,13 @@ export const Trigger = ({
 
   return (
     <div
-      className={classNames("border border-slate-700 bg-slate-400 select-none p-2", {
-        ["outline outline-blue-600 outline-2"]: selectedId === flow.id
+      className={classNames("border border-slate-700 select-none p-2", {
+        ["outline outline-blue-600 outline-2"]: selectedId === flow.id,
+        [flow.color || 'bg-slate-300']: true,
       })}
       onClick={() => { selectEntity(flow.id) }}
     >
-      <span>When {elements[flow.elementId].name} {getActionName(flow.trigger)}</span>
+      <span>When {elements[flow.elementId]?.name || '[select element]'} {getActionName(flow.trigger)}</span>
     </div>
   )
 }
